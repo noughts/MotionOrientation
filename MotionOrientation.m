@@ -51,7 +51,7 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
     self.motionManager.accelerometerUpdateInterval = 0.1;
     if ( ![self.motionManager isAccelerometerAvailable] ) {
         NSLog(@"MotionOrientation - Accelerometer is NOT available");
-#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
         [self simulatorInit];
 #endif
         return;
@@ -215,7 +215,7 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
 }
 
 // Simulator support
-#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
 
 - (void)simulatorInit
 {
