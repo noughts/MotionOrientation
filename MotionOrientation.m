@@ -63,7 +63,9 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
         return;
     }
     [self.motionManager startAccelerometerUpdatesToQueue:self.operationQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
-        [self accelerometerUpdateWithData:accelerometerData error:error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self accelerometerUpdateWithData:accelerometerData error:error];
+        });
     }];
 }
 
@@ -121,32 +123,26 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
 	float xx = -acceleration.x;
 	float yy = acceleration.y;
     float z = acceleration.z;
-	float angle = atan2(yy, xx); 
+	float angle = atan2(yy, xx);
     float absoluteZ = (float)fabs(acceleration.z);
     
 	// Add 1.5 to the angle to keep the label constantly horizontal to the viewer.
-    //	[interfaceOrientationLabel setTransform:CGAffineTransformMakeRotation(angle+1.5)]; 
+    //	[interfaceOrientationLabel setTransform:CGAffineTransformMakeRotation(angle+1.5)];
     
 	// Read my blog for more details on the angles. It should be obvious that you
 	// could fire a custom shouldAutorotateToInterfaceOrientation-event here.
     UIInterfaceOrientation newInterfaceOrientation = self.interfaceOrientation;
     UIDeviceOrientation newDeviceOrientation = self.deviceOrientation;
     
-#ifdef DEBUG
     NSString* orientationString = nil;
-#endif
     if(absoluteZ > 0.8f)
     {
         if ( z > 0.0f ) {
             newDeviceOrientation = UIDeviceOrientationFaceDown;
-#ifdef DEBUG
             orientationString = @"MotionOrientation - FaceDown";
-#endif
         } else {
             newDeviceOrientation = UIDeviceOrientationFaceUp;
-#ifdef DEBUG
             orientationString = @"MotionOrientation - FaceUp";
-#endif
         }
 	}
     else if(angle >= -2.0 && angle <= -1.0) // (angle >= -2.25 && angle <= -0.75)
@@ -154,40 +150,32 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
         newInterfaceOrientation = UIInterfaceOrientationPortrait;
         newDeviceOrientation = UIDeviceOrientationPortrait;
         //self.captureVideoOrientation = AVCaptureVideoOrientationPortrait;
-#ifdef DEBUG
         orientationString = @"MotionOrientation - Portrait";
-#endif
 	}
 	else if(angle >= -0.5 && angle <= 0.5) // (angle >= -0.75 && angle <= 0.75)
 	{
-        newInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
+        newInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
         newDeviceOrientation = UIDeviceOrientationLandscapeLeft;
         //self.captureVideoOrientation = AVCaptureVideoOrientationLandscapeRight;
-#ifdef DEBUG
         orientationString = @"MotionOrientation - Left";
-#endif
 	}
 	else if(angle >= 1.0 && angle <= 2.0) // (angle >= 0.75 && angle <= 2.25)
 	{
         newInterfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;
         newDeviceOrientation = UIDeviceOrientationPortraitUpsideDown;
         //self.captureVideoOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
-#ifdef DEBUG
         orientationString = @"MotionOrientation - UpsideDown";
-#endif
 	}
 	else if(angle <= -2.5 || angle >= 2.5) // (angle <= -2.25 || angle >= 2.25)
 	{
-        newInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
+        newInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
         newDeviceOrientation = UIDeviceOrientationLandscapeRight;
         //self.captureVideoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-#ifdef DEBUG
         orientationString = @"MotionOrientation - Right";
-#endif
 	} else {
         
     }
-
+    
     BOOL deviceOrientationChanged = NO;
     BOOL interfaceOrientationChanged = NO;
     
@@ -200,22 +188,22 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
         interfaceOrientationChanged = YES;
         _interfaceOrientation = newInterfaceOrientation;
     }
-
+    
     // post notifications
     if ( deviceOrientationChanged ) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:MotionOrientationChangedNotification 
-                                                            object:nil 
+        [[NSNotificationCenter defaultCenter] postNotificationName:MotionOrientationChangedNotification
+                                                            object:nil
                                                           userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self, kMotionOrientationKey, nil]];
         if ( self.showDebugLog ) {
             NSLog(@"didAccelerate: absoluteZ: %f angle: %f (x: %f, y: %f, z: %f), orientationString: %@",
-                  absoluteZ, angle, 
-                  acceleration.x, acceleration.y, acceleration.z, 
+                  absoluteZ, angle,
+                  acceleration.x, acceleration.y, acceleration.z,
                   orientationString);
         }
     }
     if ( interfaceOrientationChanged ) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:MotionOrientationInterfaceOrientationChangedNotification 
-                                                            object:nil 
+        [[NSNotificationCenter defaultCenter] postNotificationName:MotionOrientationInterfaceOrientationChangedNotification
+                                                            object:nil
                                                           userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self, kMotionOrientationKey, nil]];
     }
 }
