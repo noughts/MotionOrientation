@@ -312,6 +312,7 @@
 				E5E7A70517C1F57A00803A0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

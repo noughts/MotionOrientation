@@ -165,7 +165,7 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
 	}
 	else if(angle >= -0.5 && angle <= 0.5) // (angle >= -0.75 && angle <= 0.75)
 	{
-        newInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
+        newInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
         newDeviceOrientation = UIDeviceOrientationLandscapeLeft;
         //self.captureVideoOrientation = AVCaptureVideoOrientationLandscapeRight;
         orientationString = @"MotionOrientation - Left";
@@ -179,7 +179,7 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
 	}
 	else if(angle <= -2.5 || angle >= 2.5) // (angle <= -2.25 || angle >= 2.25)
 	{
-        newInterfaceOrientation = UIInterfaceOrientationLandscapeLeft;
+        newInterfaceOrientation = UIInterfaceOrientationLandscapeRight;
         newDeviceOrientation = UIDeviceOrientationLandscapeRight;
         //self.captureVideoOrientation = AVCaptureVideoOrientationLandscapeLeft;
         orientationString = @"MotionOrientation - Right";

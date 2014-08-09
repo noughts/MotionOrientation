@@ -9,7 +9,10 @@
 #import "AppDelegate.h"
 #import "MotionOrientation.h"
 
-@implementation AppDelegate
+@implementation AppDelegate{
+	IBOutlet UIButton* _start_btn;
+	IBOutlet UIButton* _stop_btn;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -22,7 +25,7 @@
     
     // Register for MotionOrientation orientation changes
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(motionOrientationChanged:)
+                                             selector:@selector(motionDeviceOrientationChanged:)
                                                  name:MotionOrientationChangedNotification
                                                object:nil];
     
@@ -32,7 +35,6 @@
                                              selector:@selector(deviceOrientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-    
     return YES;
 }
 
@@ -46,12 +48,16 @@
 
 
 
-- (void)motionOrientationChanged:(NSNotification *)notification
-{
+- (void)motionDeviceOrientationChanged:(NSNotification *)notification{
 	NSAssert( [NSThread isMainThread], @"" );
 	_label1.text = notification.description;
 	_label2.text = [self stringDescriptionForDeviceOrientation:[MotionOrientation sharedInstance].deviceOrientation];
+	[UIView animateWithDuration:0.33 animations:^{
+		_start_btn.transform = [MotionOrientation sharedInstance].affineTransform;
+		_stop_btn.transform = [MotionOrientation sharedInstance].affineTransform;
+	}];
 }
+
 
 - (void)deviceOrientationChanged:(NSNotification *)notification
 {
