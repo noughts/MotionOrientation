@@ -62,11 +62,22 @@ NSString* const kMotionOrientationKey = @"kMotionOrientationKey";
 #endif
         return;
     }
-    [self.motionManager startAccelerometerUpdatesToQueue:self.operationQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+}
+
+-(void)start{
+	if( [self.motionManager isAccelerometerActive] ){
+		NSLog( @"already started" );
+		return;
+	}
+	[self.motionManager startAccelerometerUpdatesToQueue:self.operationQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self accelerometerUpdateWithData:accelerometerData error:error];
         });
     }];
+}
+
+-(void)stop{
+	[self.motionManager stopAccelerometerUpdates];
 }
 
 - (id)init

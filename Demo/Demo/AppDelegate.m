@@ -21,7 +21,6 @@
     [self.window makeKeyAndVisible];
     
     // Register for MotionOrientation orientation changes
-    [MotionOrientation initialize];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(motionOrientationChanged:)
                                                  name:MotionOrientationChangedNotification
@@ -37,12 +36,21 @@
     return YES;
 }
 
+-(IBAction)onStartButtonTap:(id)sender{
+	[[MotionOrientation sharedInstance] start];
+}
+
+-(IBAction)onStopButtonTap:(id)sender{
+	[[MotionOrientation sharedInstance] stop];
+}
+
+
+
 - (void)motionOrientationChanged:(NSNotification *)notification
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _label1.text = notification.description;
-        _label2.text = [self stringDescriptionForDeviceOrientation:[MotionOrientation sharedInstance].deviceOrientation];
-    });
+	NSAssert( [NSThread isMainThread], @"" );
+	_label1.text = notification.description;
+	_label2.text = [self stringDescriptionForDeviceOrientation:[MotionOrientation sharedInstance].deviceOrientation];
 }
 
 - (void)deviceOrientationChanged:(NSNotification *)notification

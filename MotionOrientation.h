@@ -24,4 +24,7 @@ extern NSString* const kMotionOrientationKey;
 + (void)initialize;
 + (MotionOrientation *)sharedInstance;
 
+-(void)start;
+-(void)stop;
+
 @end
