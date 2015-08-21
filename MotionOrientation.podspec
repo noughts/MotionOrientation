@@ -1,8 +1,8 @@
 
 Pod::Spec.new do |s|
 
-  s.name         = "MotionOrientation"
-  s.version      = "0.0.1"
+  s.name         = "NNMotionOrientation"
+  s.version      = "0.1.0"
   s.summary      = "An observer to notify the orientation of iOS device changed, using CoreMotion for taking the orientation in 'Orientation Lock'."
   s.homepage     = "https://github.com/noughts/MotionOrientation"
 
