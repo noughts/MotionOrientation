@@ -5,6 +5,7 @@ Pod::Spec.new do |s|
   s.version      = "0.1.0"
   s.summary      = "An observer to notify the orientation of iOS device changed, using CoreMotion for taking the orientation in 'Orientation Lock'."
   s.homepage     = "https://github.com/noughts/MotionOrientation"
+  s.author       = { "Koichi Yamamoto" => "noughts@gmail.com" }
 
   s.license      = { :type => 'Apache License, Version 2.0', :text => <<-LICENSE
       Licensed under the Apache License, Version 2.0 (the "License");
