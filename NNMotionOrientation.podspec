@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "NNMotionOrientation"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "An observer to notify the orientation of iOS device changed, using CoreMotion for taking the orientation in 'Orientation Lock'."
   s.homepage     = "https://github.com/noughts/MotionOrientation"
   s.author       = { "Koichi Yamamoto" => "noughts@gmail.com" }
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   }
 
   s.platform     = :ios
-  s.source       = { :git => "https://github.com/noughts/MotionOrientation.git" }
+  s.source       = { :git => "https://github.com/noughts/MotionOrientation.git", :tag => s.version.to_s }
   s.source_files  = 'MotionOrientation.{h,m}'
   s.preserve_paths = "README.md"
   s.frameworks = 'CoreMotion', 'CoreGraphics'
